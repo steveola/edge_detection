@@ -1,0 +1,82 @@
+<!--By Ola Stephen Onuh https://github.com/steveola/edge_detection -->
+<html>
+<body>
+<title> Canvas Edge Detection</title>
+<body>
+
+
+<h3 class="example">SIMPLE EDGE DETECTION</h3>
+<img width="200" id="scream" src="favor2.jpg" alt="The Scream">
+<canvas id="myCanvas2" width="200" height="300" style="display:inline;left:250;top:140px;border:1px solid #d3d3d3;background:#ffffff;">
+<h2 class="example">Example</h2>
+<p>Use getImageData() to invert the color of every pixels of an image on the canvas:</p>
+
+YourbrowserdoesnotsupporttheHTML5canvastag.</canvas>
+<button onclick='detect()'>DETECT</button>
+
+<script>
+	function detect(){
+		var c=document.getElementById("myCanvas2");
+		var ctx=c.getContext("2d");
+		var img=document.getElementById("scream");
+		ctx.drawImage(img,0,0);
+		var imgData=ctx.getImageData(0,0,c.width,c.height);
+		for (var i=0;i<imgData.data.length;i+=4)
+		{
+			  r1 = imgData.data[i];
+			  g1 = imgData.data[i+1];
+			  b1 = imgData.data[i+2];
+			  a1 = imgData.data[i+3];
+			  
+			  r2 = imgData.data[i+4];
+			  g2 = imgData.data[i+5];
+			  b2 = imgData.data[i+6];
+			  a2 = imgData.data[i+7];
+			  
+			  r3 = imgData.data[i+8];
+			  g3 = imgData.data[i+9];
+			  b3 = imgData.data[i+10];
+			  a3 = imgData.data[i+11];
+			  
+			  nextPixelRow = img.width * 4;
+			  rx2 = imgData.data[i+nextPixelRow];
+			  gx2 = imgData.data[i+1+nextPixelRow];
+			  bx2 = imgData.data[i+2+nextPixelRow];
+			  ax2 = imgData.data[i+3+nextPixelRow];
+			  
+			  /*
+			  imgData.data[i]=255-imgData.data[i];
+			  imgData.data[i+1]=255-imgData.data[i+1];
+			  imgData.data[i+2]=255-imgData.data[i+2];
+			  imgData.data[i+3]=255;
+			  */
+			if ((i<2001000) && (i >= 0) && (i%2 == 0))
+			//if ((i<200100) && (i > 7000) && (i%3 == 0))  //wire gaze across
+			{
+			//set range for editing
+
+			  
+				if (
+				(Math.abs((r1 + g1 + b1)- (r2 + g2 + b2)) > 85) ||
+				(Math.abs((r1 + g1 + b1)- (rx2 + gx2 + bx2)) > 85)
+				){
+				  imgData.data[i]=0;
+				  imgData.data[i+1]=0;
+				  imgData.data[i+2]=255;
+				  imgData.data[i+3]=255;
+			  } else{
+				  imgData.data[i]=255;
+				  imgData.data[i+1]=255;
+				  imgData.data[i+2]=255;
+				  imgData.data[i+3]=255;	  
+			  }
+
+			}
+		}
+	  
+		ctx.putImageData(imgData,0,0);
+	}
+</script> 
+
+</body>
+</html>
